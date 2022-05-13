@@ -32,12 +32,13 @@ class ObjectBG{
         this.density = densityFraction;
         this.movement = {
             speed: speed,
-            range: range
+            range: range,
         }
         this.initRange = range;
     }
     draw(){
         c.drawImage(this.image,this.x - this.image.width/2.5,this.y-this.image.height/2.5);
+        
     }
     update(){
         let dx = mouse.x - this.x;
@@ -68,6 +69,13 @@ class ObjectBG{
                 this.y -=dy/returnSpeed;
             }
         }
+        /* MOVIMIENTO VERTICAL OPCION 1 
+        this.y -=this.movement.speed;
+        this.movement.range -= this.movement.speed;
+        if(this.movement.range <= 0 || Math.abs(this.movement.range) >= this.initRange){
+            this.movement.speed *=-1;
+        } 
+        */
         this.draw();
     }
 }
@@ -76,28 +84,36 @@ let tuercas = [new ObjectBG({image:tuercaImg,x:300,y:200,speed:.5,range:130}),
               new ObjectBG({image:tuercaImg,x:360,y:500,speed:.3,range:90})];
 
 
-              
-/* MOVIMIENTO DE TUERCAS EN EL EJE Y 
 
-let tl = gsap.timeline();
-tl.from(tuercas[0],{
-    duration: 5,
-    y: tuercas[0].y -60,
-    repeat: -1,
-    yoyo: true
-})
-.from(tuercas[1],{
-    duration: 3,
-    y: tuercas[2].y -60,
-    repeat: -1,
-    yoyo: true
-})
-.from(tuercas[2],{
-    duration: 4,
-    y: tuercas[2].y -60,
-    repeat: -1,
-    yoyo: true
-})
+/* MOVIMIENTO DE TUERCAS EN EL EJE Y OPCION 2
+
+TweenMax.to(
+        tuercas[0], 
+        2.5, {
+        ease: Power0.easeNone,
+        y: tuercas[0].y -60,
+        repeat: -1,
+        yoyo: true }
+        );
+TweenMax.to(
+        tuercas[1], 
+        2.5, {
+        ease: Power0.easeNone,
+        y: tuercas[1].y -80,
+        repeat: -1,
+        yoyo: true,
+        delay: .5}
+        );
+TweenMax.to(
+        tuercas[2], 
+        2.5, { ease: 
+        Power0.easeNone,
+        y: tuercas[2].y +75,
+        repeat: -1,
+        yoyo: true,
+        delay:.3}
+        );
+
 */
 
 function animate(){
@@ -106,6 +122,12 @@ function animate(){
 
     tuercas.forEach(tuerca =>{
         tuerca.update();
+        /* MOVIMIENTO VERTICAL OPCION 1  */
+        tuerca.y -=tuerca.movement.speed;
+        tuerca.movement.range -= tuerca.movement.speed;
+        if(tuerca.movement.range <= 0 || Math.abs(tuerca.movement.range) >= tuerca.initRange){
+            tuerca.movement.speed *=-1;
+        }
     })
 }
 animate();
